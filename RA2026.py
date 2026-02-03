@@ -40,11 +40,11 @@ with col_inputs:
     st.subheader("🍦 Оборудване (Брой фризери)")
     f1, f2, f3 = st.columns(3)
     with f1:
-        s_freezer = st.number_input("< 1м", min_value=0, step=1, value=0)
+        s_freezer = st.number_input("<1м", min_value=0, step=1, value=0)
     with f2:
         m_freezer = st.number_input("1м", min_value=0, step=1, value=0)
     with f3:
-        l_freezer = st.number_input("> 1м", min_value=0, step=1, value=0)
+        l_freezer = st.number_input(">1м", min_value=0, step=1, value=0)
 
 # --- ИЗЧИСЛЕНИЯ ПО ТЪРГОВСКА ПОЛИТИКА ---
 total_freezers = s_freezer + m_freezer + l_freezer
