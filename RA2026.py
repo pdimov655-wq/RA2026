@@ -6,7 +6,7 @@ VAT_RATE = 1.20
 
 st.set_page_config(page_title="Investment Calc Pro", layout="wide")
 
-# --- ИНИЦИАЛИЗАЦИЯ НА СЪСТОЯНИЕТО ---
+# --- ИНИЦИАЛИЗАЦИЯ НА СЪСТОЯНИЕТО (за бутона Изчисти) ---
 if "form_data" not in st.session_state:
     st.session_state.form_data = {
         "turnover": None, "inv_net": None, "inv_gross": None,
@@ -30,7 +30,7 @@ with col_inputs:
     # Ред 1: Валута и Оборот
     c_top1, c_top2 = st.columns([1, 1.2])
     with c_top1:
-        currency_mode = st.radio("Валута:", ["BGN", "EUR"], horizontal=True)
+        currency_mode = st.radio("Валута за въвеждане:", ["BGN", "EUR"], horizontal=True)
     with c_top2:
         raw_turnover = st.number_input("Прогнозен Оборот (без ДДС)", min_value=0.0, step=100.0, 
                                        value=st.session_state.form_data["turnover"], placeholder="Сума...")
@@ -42,10 +42,10 @@ with col_inputs:
         inv_net = st.number_input("Сума без ДДС", min_value=0.0, step=10.0, 
                                   value=st.session_state.form_data["inv_net"], placeholder="0.00")
     with inv_c2:
-        inv_gross = st.number_input("Су_ма с ДДС", min_value=0.0, step=12.0, 
+        inv_gross = st.number_input("Сума с ДДС", min_value=0.0, step=12.0, 
                                     value=st.session_state.form_data["inv_gross"], placeholder="0.00")
 
-    # Ред 3: Отстъпка и Фризери (Компактно)
+    # Ред 3: Отстъпка и Фризери
     c_mid1, c_mid2 = st.columns([1, 2])
     with c_mid1:
         discount_pct = st.number_input("Отстъпка (%)", min_value=0.0, max_value=100.0, step=0.1, value=st.session_state.form_data["discount"])
@@ -59,7 +59,7 @@ with col_inputs:
     if st.button("🗑️ ИЗЧИСТИ ВСИЧКО"):
         clear_form()
 
-# --- ЛОГИКА ---
+# --- ИЗЧИСЛИТЕЛНА ЛОГИКА ---
 if inv_net:
     final_inv_net = inv_net
 elif inv_gross:
@@ -116,7 +116,7 @@ with col_results:
             if turnover_eur < min_req_turnover_eur:
                 st.error(f"Нужен мин. оборот: {min_req_turnover_eur:,.0f} €")
             if final_result_pct > allowed_max_pct:
-                st.warning(f"Превишен лимит с {(final_result_pct - allowed_max_pct):.2f}%")
+                st.warning(f"Над лимита с {(final_result_pct - allowed_max_pct):.2f}%")
         else:
             st.success("✅ Сделката е одобрена!")
 
@@ -124,4 +124,4 @@ with col_results:
             st.write(f"Инвестиция с ДДС: **{inv_eur_net*VAT_RATE:,.2f} €**")
             st.write(f"Инвестиция с ДДС: **{inv_bgn_net*VAT_RATE:,.2f} лв.**")
     else:
-        st.info("💡 Въведете данни за анализ.")
+        st.info("💡 Въведете данни вляво, за да видите анализа.")
